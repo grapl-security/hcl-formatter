@@ -1,5 +1,3 @@
-version: "3.8"
-
 x-common-variables:
   read-only-workdir: &read-only-workdir
     type: bind
@@ -14,20 +12,19 @@ x-common-variables:
 
 services:
   hcl-formatter:
+    # The Makefile will ensure that this image is built from local
+    # sources before invoking this service, so we'll always be
+    # operating off of the code within this repository.
     image: docker.cloudsmith.io/grapl/raw/hcl-formatter:latest
     command: format
     volumes:
       - *read-write-workdir
 
   hcl-linter:
+    # The Makefile will ensure that this image is built from local
+    # sources before invoking this service, so we'll always be
+    # operating off of the code within this repository.
     image: docker.cloudsmith.io/grapl/raw/hcl-formatter:latest
     command: lint
-    volumes:
-      - *read-only-workdir
-
-  hadolint:
-    image: hadolint/hadolint:2.6.0-debian
-    command: [ "hadolint", "Dockerfile" ]
-    working_dir: /workdir
     volumes:
       - *read-only-workdir
